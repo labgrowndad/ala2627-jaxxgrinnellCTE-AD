@@ -4,62 +4,120 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- CHANGE THIS. It is the name on the browser tab, and it is what Google shows. -->
-  <title>jaxx grinnell — what you build Test</title>
-
-  <!-- CHANGE THIS TOO. One sentence. It is what shows under your link when someone shares it. -->
-  <meta name="description" content="One sentence about who you are and what you make.">
-
+  <meta name="theme-color" content="#101415">
+  <meta name="description" content="Jaxx Grinnell is a student builder exploring games, design, and code.">
+  <title>Jaxx Grinnell — student builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="wordmark" href="index.html" aria-label="Jaxx Grinnell home">JG<span>.</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#work">work</a>
+        <a href="#about">about</a>
+        <a class="nav-contact" href="mailto:you@example.com">say hello <span>↗</span></a>
+      </nav>
+    </header>
 
-  <header>
-    <!-- Exactly ONE h1 on the page. It is your name. -->
-    <h1>jaxx grinnell</h1>
-    <p class="tagline"> car clicker .</p>
-  </header>
+    <main>
+      <section class="bento-grid hero-grid" aria-labelledby="hero-title">
+        <article class="glass hero-card reveal">
+          <p class="eyebrow"><span class="status-dot"></span> open to learning</p>
+          <h1 id="hero-title">I make things<br><em>to understand</em><span class="accent">.</span></h1>
+          <p class="hero-copy">A student developer turning curiosity into tiny games, useful interfaces, and real-world
+            skills.</p>
+          <a class="arrow-link" href="#work">Explore my work <span>↓</span></a>
+          <div class="hero-orbit orbit-one"></div>
+          <div class="hero-orbit orbit-two"></div>
+        </article>
 
-  <main>
+        <article class="glass profile-card reveal reveal-delay-1" id="about">
+          <div class="profile-heading"><span class="card-label">01 / about</span><span class="spark">✦</span></div>
+          <div class="avatar" aria-hidden="true">JG</div>
+          <h2>Hey, I’m Jaxx.</h2>
+          <p>I’m a creative problem solver from the classroom, currently learning how to turn good ideas into things
+            people can use.</p>
+          <div class="mini-stats">
+            <div><strong>03</strong><span>projects</span></div>
+            <div><strong>∞</strong><span>questions</span></div>
+          </div>
+        </article>
 
-    <section>
-      <h2>making a game</h2>
-      <ul>
-        <li><strong>this is going to be a clicker game.</strong> you will buy new cars and build your car empire.</li>
-        <li><strong>you need to manage your money and make smart desicions and keep upgrading your car's</strong>.</li>
-      </ul>
-    </section>
+        <article class="glass time-card reveal reveal-delay-2">
+          <span class="card-label">local time</span>
+          <strong id="local-time">--:--</strong>
+          <span>Alabama, USA <i>•</i> CST</span>
+        </article>
 
-    <section>
-      <h2></h2>
-      <p>
-        i will learn how to make a simple game for me to play and how to code better and put it into a real life skill
-      "
-      </p>
-    </section>
+        <article class="glass now-card reveal reveal-delay-3">
+          <div class="card-label">currently building</div>
+          <div class="now-title"><span class="now-icon">⌁</span>
+            <h2>Car Clicker</h2>
+          </div>
+          <p>A game about smart upgrades, big goals, and making every click count.</p>
+          <div class="progress-row"><span>prototype progress</span><strong>65%</strong></div>
+          <div class="progress-bar"><span></span></div>
+        </article>
+      </section>
 
-    <section>
-      <h2>Get in touch</h2>
-      <!--
-        Put an email you will still control after graduation. If you only have the school one
-        today, that is fine — put it in, and change it later. That is what commits are for.
-      -->
-      <p><a href="mailto:you@example.com">you@example.com</a></p>
-    </section>
+      <section class="work-section" id="work" aria-labelledby="work-title">
+        <div class="section-heading">
+          <div><span class="eyebrow">selected experiments</span>
+            <h2 id="work-title">Things I’m making</h2>
+          </div>
+          <div class="filter-buttons" role="group" aria-label="Filter projects"><button class="filter-button active"
+              data-filter="all">all</button><button class="filter-button" data-filter="game">games</button><button
+              class="filter-button" data-filter="web">web</button></div>
+        </div>
+        <div class="project-grid">
+          <article class="glass project-card project-featured" data-category="game">
+            <div class="project-art car-art"><span class="car-sun"></span><span class="road-line"></span><span
+                class="car-shape">▰</span><span class="art-label">GAME / 001</span></div>
+            <div class="project-info">
+              <div><span class="project-type">game design</span>
+                <h3>Car Clicker</h3>
+              </div><a class="icon-link" href="#contact" aria-label="Learn about Car Clicker">↗</a>
+            </div>
+          </article>
+          <article class="glass project-card" data-category="web">
+            <div class="project-art code-art"><span>&lt;/&gt;</span><small>build<br>ship<br>learn</small></div>
+            <div class="project-info">
+              <div><span class="project-type">web / 002</span>
+                <h3>This is me</h3>
+              </div><a class="icon-link" href="assignments/01-this-is-me/" aria-label="View This is me project">↗</a>
+            </div>
+          </article>
+          <article class="glass project-card" data-category="web">
+            <div class="project-art vault-art"><span class="vault-ring">✦</span><span class="art-label">PYTHON /
+                003</span></div>
+            <div class="project-info">
+              <div><span class="project-type">python / story</span>
+                <h3>The Vault</h3>
+              </div><a class="icon-link" href="game/README.md" aria-label="Learn about The Vault">↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
 
-  </main>
+      <section class="contact-strip glass" id="contact">
+        <span class="eyebrow">have an idea?</span>
+        <h2>Let’s make<br><em>something real</em><span class="accent">.</span></h2><a class="contact-button"
+          href="mailto:you@example.com">start a conversation <span>↗</span></a>
+      </section>
+    </main>
 
-  <footer>
-    <p>Built by hand. Last updated <!-- change this when you change the page --> spetember.</p>
-  </footer>
-
+    <footer><span>© 2026 Jaxx Grinnell</span><span>built with curiosity <b>✦</b></span><a href="#">back to top ↑</a>
+    </footer>
+  </div>
+  <script src="script.js"></script>
 </body>
 
 </html>
-
-.cards {
-  display: flex;
-  gap: 16px;
-}
