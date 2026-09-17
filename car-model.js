@@ -21,6 +21,7 @@ const garageBays = [
 const garageModels = new Map();
 let selectedGarageCar = 'civicTypeR';
 let garageModelTemplate;
+let hellcatModelTemplate;
 const fixedCameraPosition = new THREE.Vector3(14, 6.5, -17);
 const fixedCameraTarget = new THREE.Vector3(0, 0.2, 0.3);
 
@@ -453,8 +454,9 @@ function renderGarageCars() {
   const garageState = getGarageState();
   selectedGarageCar = garageState.selectedCar;
   garageBays.forEach((bay) => {
-    if (!garageState.cars[bay.carId]?.owned || !garageModelTemplate) return;
-    const model = bay.carId === 'hellcat' ? createHellcatModel() : garageModelTemplate.clone(true);
+    const template = bay.carId === 'hellcat' ? hellcatModelTemplate : garageModelTemplate;
+    if (!garageState.cars[bay.carId]?.owned || !template) return;
+    const model = template.clone(true);
     fitModel(model);
     model.scale.multiplyScalar(0.68);
     model.position.x = bay.x;
@@ -503,6 +505,18 @@ new GLTFLoader().load(
   (error) => {
     console.error('Unable to load local Civic Type R model.', error);
     loadingMessage.textContent = 'Civic model could not load';
+  }
+);
+
+new GLTFLoader().load(
+  './assets/hellcat.glb',
+  (gltf) => {
+    hellcatModelTemplate = gltf.scene;
+    renderGarageCars();
+  },
+  undefined,
+  (error) => {
+    console.error('Unable to load local Hellcat model.', error);
   }
 );
 
