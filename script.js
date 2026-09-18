@@ -31,15 +31,17 @@ filterButtons.forEach((button) => {
   });
 });
 
+const civicCheatCode = 'JAXXGOLD';
 const civicCars = {
   civicTypeR: { name: 'Honda Civic Type R', basePower: 1, price: 0 },
-  hellcat: { name: 'Dodge Challenger SRT Hellcat', basePower: 4, price: 35000 },
+  hellcat: { name: 'Dodge Challenger SRT Hellcat', basePower: 4, price: 18000 },
 };
 const civicStorageKey = 'jaxx-civic-clicker';
 const civicGame = {
   selectedCar: 'civicTypeR',
   miles: 0,
   cash: 0,
+  infiniteMoney: false,
   cars: {
     civicTypeR: { owned: true, engineLevel: 0, passiveLevel: 0 },
     hellcat: { owned: false, engineLevel: 0, passiveLevel: 0 },
@@ -89,10 +91,45 @@ function loadCivicGame() {
   if (!civicGame.cars[civicGame.selectedCar].owned) civicGame.selectedCar = 'civicTypeR';
   if (!Number.isFinite(civicGame.miles)) civicGame.miles = 0;
   if (!Number.isFinite(civicGame.cash)) civicGame.cash = 0;
+  if (typeof civicGame.infiniteMoney !== 'boolean') civicGame.infiniteMoney = false;
 }
 
 function saveCivicGame() {
   localStorage.setItem(civicStorageKey, JSON.stringify(civicGame));
+}
+
+function activateInfiniteMoney() {
+  civicGame.infiniteMoney = true;
+  civicGame.cash = Number.MAX_SAFE_INTEGER;
+  civicElements.message.textContent = 'Infinite money activated. The garage has unlimited cash.';
+  saveCivicGame();
+  updateCivicDisplay();
+}
+
+function toggleSettingsModal(forceOpen) {
+  const modal = document.querySelector('#settings-modal');
+  const shouldShow = typeof forceOpen === 'boolean' ? forceOpen : modal.classList.contains('hidden');
+  modal.classList.toggle('hidden', !shouldShow);
+  modal.setAttribute('aria-hidden', String(!shouldShow));
+  if (shouldShow) {
+    const input = document.querySelector('#settings-code');
+    input.focus();
+    input.select();
+  }
+}
+
+function handleSettingsCode() {
+  const input = document.querySelector('#settings-code');
+  const typedCode = (input.value || '').trim().toUpperCase();
+  if (typedCode === civicCheatCode) {
+    activateInfiniteMoney();
+    toggleSettingsModal(false);
+    input.value = '';
+    return;
+  }
+  civicElements.message.textContent = 'That code is invalid. Try again.';
+  input.value = '';
+  input.focus();
 }
 
 function getCivicPower() {
@@ -123,7 +160,7 @@ function updateCivicDisplay() {
   const selectedCar = civicCars[civicGame.selectedCar];
   const selectedProgress = civicGame.cars[civicGame.selectedCar];
   civicElements.miles.textContent = Math.floor(civicGame.miles);
-  civicElements.cash.textContent = Math.floor(civicGame.cash);
+  civicElements.cash.textContent = civicGame.infiniteMoney ? '∞' : Math.floor(civicGame.cash);
   civicElements.passiveIncome.textContent = getPassiveIncomePerSecond();
   civicElements.power.textContent = getCivicPower();
   civicElements.upgradeCost.textContent = getCivicUpgradeCost();
@@ -215,7 +252,11 @@ async function startCivicEngineModel() {
 function driveCivic() {
   const power = getCivicPower();
   civicGame.miles += power;
-  civicGame.cash += power;
+  if (civicGame.infiniteMoney) {
+    civicGame.cash = Number.MAX_SAFE_INTEGER;
+  } else {
+    civicGame.cash += power;
+  }
   civicElements.message.textContent = `${civicCars[civicGame.selectedCar].name} logged ${power} mile${power === 1 ? '' : 's'}.`;
   saveCivicGame();
   updateCivicDisplay();
@@ -268,11 +309,13 @@ function stopCivicRev() {
 
 function tuneCivic() {
   const cost = getCivicUpgradeCost();
-  if (civicGame.cash < cost) {
+  if (!civicGame.infiniteMoney && civicGame.cash < cost) {
     civicElements.message.textContent = `You need $${cost - Math.floor(civicGame.cash)} more cash to tune it.`;
     return;
   }
-  civicGame.cash -= cost;
+  if (!civicGame.infiniteMoney) {
+    civicGame.cash -= cost;
+  }
   civicGame.cars[civicGame.selectedCar].engineLevel += 1;
   civicElements.message.textContent = `Engine tuned. Now earning ${getCivicPower()} miles per drive.`;
   saveCivicGame();
@@ -284,11 +327,13 @@ function selectOrBuyCivicCar(event) {
   const car = civicCars[carId];
   const progress = civicGame.cars[carId];
   if (!progress.owned) {
-    if (civicGame.cash < car.price) {
+    if (!civicGame.infiniteMoney && civicGame.cash < car.price) {
       civicElements.message.textContent = `You need $${car.price - Math.floor(civicGame.cash)} more cash to buy the ${car.name}.`;
       return;
     }
-    civicGame.cash -= car.price;
+    if (!civicGame.infiniteMoney) {
+      civicGame.cash -= car.price;
+    }
     progress.owned = true;
     civicElements.message.textContent = `${car.name} added to the garage. Choose it whenever you want more power.`;
   }
@@ -299,13 +344,15 @@ function selectOrBuyCivicCar(event) {
 
 function addPassiveUpgrade() {
   const cost = getCivicPassiveCost();
-  if (civicGame.cash < cost) {
+  if (!civicGame.infiniteMoney && civicGame.cash < cost) {
     civicElements.message.textContent = `You need $${cost - Math.floor(civicGame.cash)} more cash for this income upgrade.`;
     return;
   }
   const progress = civicGame.cars[civicGame.selectedCar];
   progress.passiveLevel += 1;
-  civicGame.cash -= cost;
+  if (!civicGame.infiniteMoney) {
+    civicGame.cash -= cost;
+  }
   civicElements.message.textContent = `${civicCars[civicGame.selectedCar].name} now earns ${getPassiveIncomePerSecond()} cash per second across the garage.`;
   saveCivicGame();
   updateCivicDisplay();
@@ -313,8 +360,12 @@ function addPassiveUpgrade() {
 
 function collectPassiveIncome() {
   const income = getPassiveIncomePerSecond();
-  if (!income) return;
-  civicGame.cash += income;
+  if (!income && !civicGame.infiniteMoney) return;
+  if (civicGame.infiniteMoney) {
+    civicGame.cash = Number.MAX_SAFE_INTEGER;
+  } else {
+    civicGame.cash += income;
+  }
   saveCivicGame();
   updateCivicDisplay();
 }
@@ -353,6 +404,19 @@ function startCivicRace() {
 loadCivicGame();
 updateCivicDisplay();
 updateCivicMusicButton();
+const settingsButton = document.querySelector('#settings-button');
+const settingsClose = document.querySelector('#settings-close');
+const settingsSubmit = document.querySelector('#settings-submit');
+const settingsCodeInput = document.querySelector('#settings-code');
+settingsButton.addEventListener('click', () => toggleSettingsModal());
+settingsClose.addEventListener('click', () => toggleSettingsModal(false));
+settingsSubmit.addEventListener('click', handleSettingsCode);
+settingsCodeInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') handleSettingsCode();
+});
+document.querySelector('#settings-modal').addEventListener('click', (event) => {
+  if (event.target === event.currentTarget) toggleSettingsModal(false);
+});
 document.querySelector('#civic-drive').addEventListener('click', driveCivic);
 document.querySelector('#civic-upgrade').addEventListener('click', tuneCivic);
 civicElements.passive.addEventListener('click', addPassiveUpgrade);

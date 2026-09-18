@@ -75,11 +75,13 @@ nav {
   font: .75rem var(--mono);
 }
 
-nav a {
-  transition: color .2s;
+nav a,
+.settings-button {
+  transition: color .2s, border-color .2s, background .2s;
 }
 
-nav a:hover {
+nav a:hover,
+.settings-button:hover {
   color: var(--mint);
 }
 
@@ -87,11 +89,109 @@ nav span {
   color: var(--mint);
 }
 
+.settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
 .nav-contact {
   border: 1px solid var(--line);
   border-radius: 99px;
   padding: 10px 15px;
   color: var(--text);
+}
+
+.settings-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 11, .65);
+  z-index: 20;
+}
+
+.settings-modal.hidden {
+  display: none;
+}
+
+.settings-panel {
+  width: min(420px, calc(100% - 32px));
+  background: rgba(16, 20, 21, .96);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .34);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.settings-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.settings-close {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
+.settings-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font: .7rem var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+#settings-code {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .02);
+  color: var(--text);
+  font: 1rem var(--display);
+  margin-bottom: 14px;
+}
+
+.settings-submit {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--mint);
+  color: #101415;
+  font: 700 .8rem var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.settings-hint {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font: .72rem var(--mono);
 }
 
 .bento-grid {

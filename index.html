@@ -23,9 +23,23 @@
       <nav aria-label="Primary navigation">
         <a href="#work">work</a>
         <a href="#about">about</a>
+        <button class="settings-button" id="settings-button" type="button" aria-label="Open settings">⚙</button>
         <a class="nav-contact" href="mailto:you@example.com">say hello <span>↗</span></a>
       </nav>
     </header>
+
+    <div class="settings-modal hidden" id="settings-modal" aria-hidden="true">
+      <div class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="settings-header">
+          <h3 id="settings-title">Settings</h3>
+          <button class="settings-close" id="settings-close" type="button" aria-label="Close settings">×</button>
+        </div>
+        <label class="settings-label" for="settings-code">Enter cheat code</label>
+        <input id="settings-code" type="text" maxlength="20" placeholder="Type code here" autocomplete="off">
+        <button class="settings-submit" id="settings-submit" type="button">Activate</button>
+        <p class="settings-hint">Code: JAXXGOLD</p>
+      </div>
+    </div>
 
     <main>
       <section class="bento-grid hero-grid" aria-labelledby="hero-title">
@@ -102,7 +116,7 @@
               Civic Type R <span>owned</span>
             </button>
             <button class="civic-car-select" id="civic-car-hellcat" data-car="hellcat" type="button">
-              Buy Dodge Challenger <span>$35,000</span>
+              Buy Dodge Challenger <span>$18,000</span>
             </button>
           </div>
           <div class="civic-clicker">
