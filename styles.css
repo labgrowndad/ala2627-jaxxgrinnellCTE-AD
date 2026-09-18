@@ -2776,11 +2776,10 @@ footer a:hover {
   text-transform: uppercase;
 }
 
-.civic-camera-reset {
+.civic-camera-reset,
+.civic-fullscreen {
   position: absolute;
   z-index: 5;
-  top: 78px;
-  right: 30px;
   padding: 8px 11px;
   border: 1px solid rgba(239, 247, 241, .3);
   border-radius: 2px;
@@ -2791,7 +2790,18 @@ footer a:hover {
   text-transform: uppercase;
 }
 
-.civic-camera-reset:hover {
+.civic-camera-reset {
+  top: 78px;
+  right: 30px;
+}
+
+.civic-fullscreen {
+  right: 30px;
+  bottom: 18px;
+}
+
+.civic-camera-reset:hover,
+.civic-fullscreen:hover {
   border-color: #f3b45b;
   color: #f3b45b;
 }

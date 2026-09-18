@@ -182,6 +182,7 @@ function updateCivicDisplay() {
 const civicMusicStorageKey = 'jaxx-civic-music-enabled';
 const civicEngineSoundUrl = 'assets/civic-type-r-engine.mp3';
 const civicMusic = new Audio(civicEngineSoundUrl);
+const civicFullscreenButton = document.querySelector('#civic-fullscreen');
 let civicMusicEnabled = localStorage.getItem(civicMusicStorageKey) !== 'false';
 let civicRevContext;
 let civicRevSource;
@@ -401,6 +402,31 @@ function startCivicRace() {
   updateCivicRace();
 }
 
+async function toggleCivicFullscreen() {
+  const scene = document.querySelector('.civic-scene');
+  if (!scene) return;
+
+  try {
+    if (!document.fullscreenElement) {
+      if (scene.requestFullscreen) {
+        await scene.requestFullscreen();
+        civicFullscreenButton.textContent = 'exit full';
+      }
+      return;
+    }
+    if (document.exitFullscreen) {
+      await document.exitFullscreen();
+      civicFullscreenButton.textContent = 'fullscreen';
+    }
+  } catch {
+    civicElements.message.textContent = 'Fullscreen is not available in this browser.';
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  civicFullscreenButton.textContent = document.fullscreenElement ? 'exit full' : 'fullscreen';
+});
+
 loadCivicGame();
 updateCivicDisplay();
 updateCivicMusicButton();
@@ -422,6 +448,7 @@ document.querySelector('#civic-upgrade').addEventListener('click', tuneCivic);
 civicElements.passive.addEventListener('click', addPassiveUpgrade);
 civicElements.carButtons.forEach((button) => button.addEventListener('click', selectOrBuyCivicCar));
 civicElements.race.addEventListener('click', startCivicRace);
+civicFullscreenButton.addEventListener('click', toggleCivicFullscreen);
 window.addEventListener('garage-car-focused', (event) => {
   const carId = event.detail?.carId;
   if (!civicGame.cars[carId]?.owned) return;

@@ -458,7 +458,8 @@ function renderGarageCars() {
     if (!garageState.cars[bay.carId]?.owned || !template) return;
     const model = template.clone(true);
     fitModel(model);
-    model.scale.multiplyScalar(0.68);
+    model.scale.multiplyScalar(bay.carId === 'hellcat' ? 0.82 : 0.68);
+    model.rotation.y = bay.carId === 'hellcat' ? -Math.PI / 2 : 0;
     model.position.x = bay.x;
     model.position.z = 0;
     model.userData.carId = bay.carId;
